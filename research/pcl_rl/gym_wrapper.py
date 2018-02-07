@@ -19,15 +19,25 @@ Allows for using batches of possibly identitically seeded environments.
 """
 
 import gym
+import gym_flightcontrol
 import numpy as np
 import random
 
 from six.moves import xrange
 import env_spec
 
+env = None
+def get_env(env_str):
+  global env
+  if not env:
+    env = gym.make(env_str)
+  return env 
+"""
 
 def get_env(env_str):
-  return gym.make(env_str)
+    return gym.make(env_str)
+"""
+
 
 
 class GymWrapper(object):
