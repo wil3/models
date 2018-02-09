@@ -365,6 +365,7 @@ class Trainer(object):
 
     def init_fn(sess, saver):
       ckpt = None
+      # Not in supervisor mode
       if FLAGS.save_dir and sv is None:
         load_dir = FLAGS.save_dir
         ckpt = tf.train.get_checkpoint_state(load_dir)
@@ -388,6 +389,8 @@ class Trainer(object):
 
         saver = tf.train.Saver(max_to_keep=10)
         step = self.model.global_step
+        # If anything happens and there is a crash, the last checkpoint is 
+        # restored
         sv = tf.Supervisor(logdir=FLAGS.save_dir,
                            is_chief=is_chief,
                            saver=saver,
