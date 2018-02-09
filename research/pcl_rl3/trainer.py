@@ -377,7 +377,7 @@ class Trainer(object):
         saver.restore(sess, FLAGS.load_path)
 
     if FLAGS.supervisor:
-      with tf.device(tf.ReplicaDeviceSetter(FLAGS.ps_tasks, merge_devices=True)):
+      with tf.device(tf.train.replica_device_setter(FLAGS.ps_tasks, merge_devices=True)):
         self.global_step = tf.contrib.framework.get_or_create_global_step()
         tf.set_random_seed(FLAGS.tf_seed)
         self.controller = self.get_controller(self.env)
