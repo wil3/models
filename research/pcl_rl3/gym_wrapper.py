@@ -46,7 +46,8 @@ class GymWrapper(object):
     self.distinct = distinct
     self.count = count
     self.total = self.distinct * self.count
-    self.seeds = seeds or [random.randint(0, 1e12)
+    # This is a limit put on OpenAI gym
+    self.seeds = seeds or [random.randint(0, 2**32 - 1)
                            for _ in range(self.distinct)]
 
     self.envs = []
