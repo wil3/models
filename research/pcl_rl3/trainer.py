@@ -38,6 +38,7 @@ import replay_buffer
 import expert_paths
 import gym_wrapper
 import env_spec
+import collections
 
 app = tf.app
 flags = tf.flags
@@ -230,7 +231,7 @@ class Trainer(object):
     self.hparams = dict((attr, getattr(self, attr))
                         for attr in dir(self)
                         if not attr.startswith('__') and
-                        not callable(getattr(self, attr)))
+                        not isinstance(getattr(self, attr), collections.Callable))
 
   def hparams_string(self):
     return '\n'.join('%s: %s' % item for item in sorted(self.hparams.items()))
@@ -424,7 +425,7 @@ class Trainer(object):
     losses = []
     rewards = []
     all_ep_rewards = []
-    for step in xrange(1 + self.num_steps):
+    for step in range(1 + self.num_steps):
 
       if sv is not None and sv.ShouldStop():
         logging.info('stopping supervisor')
