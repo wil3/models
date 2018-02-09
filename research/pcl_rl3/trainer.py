@@ -378,7 +378,7 @@ class Trainer(object):
 
     if FLAGS.supervisor:
       with tf.device(tf.train.replica_device_setter(FLAGS.ps_tasks, merge_devices=True)):
-        self.global_step = tf.contrib.framework.get_or_create_global_step()
+        self.global_step = tf.train.get_or_create_global_step()
         tf.set_random_seed(FLAGS.tf_seed)
         self.controller = self.get_controller(self.env)
         self.model = self.controller.model
@@ -391,7 +391,7 @@ class Trainer(object):
         step = self.model.global_step
         # If anything happens and there is a crash, the last checkpoint is 
         # restored
-        sv = tf.Supervisor(logdir=FLAGS.save_dir,
+        sv = tf.train.Supervisor(logdir=FLAGS.save_dir,
                            is_chief=is_chief,
                            saver=saver,
                            save_model_secs=600,
