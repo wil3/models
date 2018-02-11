@@ -154,7 +154,7 @@ rfh = logging.handlers.RotatingFileHandler(
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 rfh.setLevel(logging.DEBUG)
 rfh.setFormatter(formatter)
-root_logger.addHandler(handler)
+root_logger.addHandler(rfh)
 #root_logger.addHandler(logging.StreamHandler())
 
 class Trainer(object):
