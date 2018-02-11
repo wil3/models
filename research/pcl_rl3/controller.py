@@ -144,7 +144,6 @@ class Controller(object):
     # that then cant be found?
     obs_after_reset = self.env.reset_if(self.start_episode)#[0]
 
-    print("Current step _sample_episodes", self.cur_step)
     # Create a file to log in realtime so we can see progress
     ep_writer = None
     ep_file = None
@@ -332,7 +331,6 @@ class Controller(object):
   def train(self, sess):
     """Sample some episodes and train on some episodes."""
     cur_step = sess.run(self.model.inc_global_step)
-    print("Current step = %d", cur_step)
     logger.info("Current step = %d", cur_step)
     self.cur_step = cur_step
 
@@ -343,7 +341,6 @@ class Controller(object):
     # on other iterations, just perform single target <-- online operation
     sess.run(self.model.copy_op)
 
-    print("Current step before sampling", self.cur_step)
     # sample from env
     (initial_state,
      observations, actions, rewards,
@@ -394,7 +391,6 @@ class Controller(object):
      pads, terminated) = self.sample_episodes(sess, greedy=True)
 
     total_rewards = np.sum(np.array(rewards) * (1 - np.array(pads)), axis=0)
-    print ("episode rewards = ", self.episode_rewards)
     return total_rewards, self.episode_rewards
 
   def convert_from_batched_episodes(
