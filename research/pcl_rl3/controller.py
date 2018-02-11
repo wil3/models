@@ -31,6 +31,7 @@ import time
 flags = tf.flags
 gfile = tf.gfile
 
+logger = tf.logging
 FLAGS = flags.FLAGS
 
 
@@ -328,6 +329,7 @@ class Controller(object):
   def train(self, sess):
     """Sample some episodes and train on some episodes."""
     cur_step = sess.run(self.model.inc_global_step)
+    logger.logger("Current step = %d", cur_step)
     self.cur_step = cur_step
 
     # on the first iteration, set target network close to online network

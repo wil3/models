@@ -417,7 +417,7 @@ class Trainer(object):
         sess = sv.PrepareSession(FLAGS.master)
     else:
       tf.set_random_seed(FLAGS.tf_seed)
-      self.global_step = tf.contrib.framework.get_or_create_global_step()
+      self.global_step = tf.train.get_or_create_global_step()
       self.controller = self.get_controller(self.env)
       self.model = self.controller.model
       self.controller.setup()
@@ -450,7 +450,7 @@ class Trainer(object):
         break
 
       self.do_before_step(step)
-
+      logger.debug("Step %d begin training", step)
       (loss, summary,
        total_rewards, episode_rewards) = self.controller.train(sess)
       _, greedy_episode_rewards = self.eval_controller.eval(sess)
