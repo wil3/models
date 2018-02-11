@@ -141,7 +141,18 @@ flags.DEFINE_string('master', 'local', 'name of master')
 flags.DEFINE_string('save_dir', '', 'directory to save model to')
 flags.DEFINE_string('load_path', '', 'path of saved model to load (if none in save_dir)')
 flags.DEFINE_string('ep_dir', '', 'directory to save steps from each episode')
+flags.DEFINE_string('log_dir', '', 'directory to save rotating logs')
 
+
+root_logger = logging.getLogger()
+root_logger.setLevel(logging.DEBUG)
+rfh = logging.handlers.RotatingFileHandler(
+              FLAGS.log_dir, maxBytes=1000000, backupCount=10) # Keep 10 1M logs
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+rfh.setLevel(logging.DEBUG)
+rfh.setFormatter(formatter)
+root_logger.addHandler(handler)
+#root_logger.addHandler(logging.StreamHandler())
 
 class Trainer(object):
   """Coordinates single or multi-replica training."""
@@ -227,6 +238,7 @@ class Trainer(object):
     self.load_trajectories_file = FLAGS.load_trajectories_file
 
     self.ep_dir = FLAGS.ep_dir
+
 
     self.hparams = dict((attr, getattr(self, attr))
                         for attr in dir(self)
