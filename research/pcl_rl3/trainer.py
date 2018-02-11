@@ -148,8 +148,9 @@ flags.DEFINE_string('log_dir', '', 'directory to save rotating logs')
 
 root_logger = logging.getLogger()
 root_logger.setLevel(logging.DEBUG)
+logfile = os.path.join(FLAGS.log_dir, "debug.log")
 rfh = logging.handlers.RotatingFileHandler(
-              FLAGS.log_dir, maxBytes=1000000, backupCount=10) # Keep 10 1M logs
+              logfile, maxBytes=1000000, backupCount=10) # Keep 10 1M logs
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 rfh.setLevel(logging.DEBUG)
 rfh.setFormatter(formatter)
