@@ -27,7 +27,7 @@ import pickle
 import random
 import os.path
 import csv
-
+import time
 flags = tf.flags
 gfile = tf.gfile
 
@@ -132,7 +132,7 @@ class Controller(object):
   def _create_episode_data_file(self):
     if not os.path.exists(self.ep_dir):
             os.makedirs(self.ep_dir)
-    filename =  "ep-{}.csv".format(self.cur_step)
+    filename =  "ep-{}-{}.csv".format(self.cur_step, int(time.time()))
     return os.path.join(self.ep_dir, filename)
 
   def _sample_episodes(self, sess, start_step = 0, greedy=False):
