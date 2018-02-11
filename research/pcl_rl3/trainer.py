@@ -148,13 +148,24 @@ flags.DEFINE_string('log_dir', '', 'directory to save rotating logs')
 
 root_logger = logging.getLogger()
 root_logger.setLevel(logging.DEBUG)
-logfile = os.path.join(FLAGS.log_dir, "debug.log")
-rfh = logging.handlers.RotatingFileHandler(
-              logfile, maxBytes=1000000, backupCount=10) # Keep 10 1M logs
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-rfh.setLevel(logging.DEBUG)
-rfh.setFormatter(formatter)
-root_logger.addHandler(rfh)
+
+if not os.path.exists(FLAGS.log_dir):
+  os.makedirs(FLAGS.log_dir)
+debug_logfile = os.path.join(FLAGS.log_dir, "debug.log")
+debug_rfh = logging.handlers.RotatingFileHandler(
+              debug_logfile, maxBytes=1000000, backupCount=10) # Keep 10 1M logs
+debug_rfh.setLevel(logging.DEBUG)
+debug_rfh.setFormatter(formatter)
+
+info_logfile = os.path.join(FLAGS.log_dir, "info.log")
+info_rfh = logging.handlers.RotatingFileHandler(
+              info_logfile, maxBytes=1000000, backupCount=10) # Keep 10 1M logs
+info_rfh.setLevel(logging.INFO)
+info_rfh.setFormatter(formatter)
+
+root_logger.addHandler(debug_rfh)
+root_logger.addHandler(info_rfh)
 #root_logger.addHandler(logging.StreamHandler())
 
 class Trainer(object):
