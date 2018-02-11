@@ -144,6 +144,7 @@ class Controller(object):
     # that then cant be found?
     obs_after_reset = self.env.reset_if(self.start_episode)#[0]
 
+    print("Current step _sample_episodes", self.cur_step)
     # Create a file to log in realtime so we can see progress
     ep_writer = None
     ep_file = None
@@ -331,7 +332,7 @@ class Controller(object):
     """Sample some episodes and train on some episodes."""
     cur_step = sess.run(self.model.inc_global_step)
     print("Current step = %d", cur_step)
-    logger.debug("Current step = %d", cur_step)
+    logger.info("Current step = %d", cur_step)
     self.cur_step = cur_step
 
     # on the first iteration, set target network close to online network
@@ -341,6 +342,7 @@ class Controller(object):
     # on other iterations, just perform single target <-- online operation
     sess.run(self.model.copy_op)
 
+    print("Current step before sampling", self.cur_step)
     # sample from env
     (initial_state,
      observations, actions, rewards,
