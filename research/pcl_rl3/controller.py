@@ -28,6 +28,7 @@ import random
 import os.path
 import csv
 import time
+import logging
 flags = tf.flags
 gfile = tf.gfile
 
@@ -329,6 +330,7 @@ class Controller(object):
   def train(self, sess):
     """Sample some episodes and train on some episodes."""
     cur_step = sess.run(self.model.inc_global_step)
+    print("Current step = %d", cur_step)
     logger.debug("Current step = %d", cur_step)
     self.cur_step = cur_step
 
