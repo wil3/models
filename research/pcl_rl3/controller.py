@@ -387,6 +387,7 @@ class Controller(object):
 
   def eval(self, sess):
     """Use greedy sampling."""
+    logger.info("Evaluating %d", self.cur_step)
     (initial_state,
      observations, actions, rewards,
      pads, terminated) = self.sample_episodes(sess, greedy=True)
