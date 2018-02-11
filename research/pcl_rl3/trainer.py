@@ -464,6 +464,7 @@ class Trainer(object):
       logger.debug("Step %d begin training", step)
       (loss, summary,
        total_rewards, episode_rewards) = self.controller.train(sess)
+      
       _, greedy_episode_rewards = self.eval_controller.eval(sess)
       self.controller.greedy_episode_rewards = greedy_episode_rewards
       losses.append(loss)

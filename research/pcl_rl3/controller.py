@@ -393,6 +393,7 @@ class Controller(object):
      pads, terminated) = self.sample_episodes(sess, greedy=True)
 
     total_rewards = np.sum(np.array(rewards) * (1 - np.array(pads)), axis=0)
+    print ("episode rewards = ", self.episode_rewards)
     return total_rewards, self.episode_rewards
 
   def convert_from_batched_episodes(
