@@ -148,7 +148,8 @@ class Controller(object):
     # Create a file to log in realtime so we can see progress
     ep_writer = None
     ep_file = None
-    if self.ep_dir:
+    # Only write steps for training models, not those for evaluation instances
+    if self.ep_dir and self.model.train:
         filepath = self._create_episode_data_file()
         ep_file = open(filepath, 'w', newline='')
         ep_writer = csv.writer(ep_file)

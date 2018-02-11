@@ -26,6 +26,10 @@ import random
 from six.moves import xrange
 import env_spec
 
+# FIXME 
+# What this is doing is creating batch_size number of the environments
+# so they can be done in parrellel
+# Unfortunately the arducopter plugin would need its server port unique for each instance
 env = None
 def get_env(env_str):
   global env

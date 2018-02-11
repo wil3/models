@@ -122,7 +122,7 @@ class Model(object):
 
   def setup(self, train=True):
     """Setup Tensorflow Graph."""
-
+    self.train = train
     self.setup_placeholders()
 
     tf.summary.scalar('avg_episode_reward', self.avg_episode_reward)
