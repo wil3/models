@@ -40,6 +40,7 @@ import gym_wrapper
 import env_spec
 import collections
 import logging
+import logging.handlers
 
 app = tf.app
 flags = tf.flags
