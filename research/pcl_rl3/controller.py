@@ -137,6 +137,28 @@ class Controller(object):
     filename =  "ep-{}-{}.csv".format(self.cur_step, int(time.time()))
     return os.path.join(self.ep_dir, filename)
 
+  def _log_step(self, step, state, action, info):
+    sim_time = 0 if "sim_time"  not in info else info["sim_time"]
+    r_reward = 0 if "r_reward"  not in info else info["r_reward"]
+    p_reward = 0 if "p_reward"  not in info else info["p_reward"]
+    y_reward = 0 if "y_reward"  not in info else info["y_reward"]
+
+    return {'step': step,
+            'sim_time': sim_time,
+            'sp_r': state[0], 
+            'sp_p' : state[1],
+            'sp_y': state[2], 
+            'r': state[3], 
+            'p': state[4], 
+            'y': state[5], 
+            "m0": action[0], 
+            "m1": action[1], 
+            "m2": action[2], 
+            "m3": action[3], 
+            'r_reward' : r_reward, 
+            'p_reward': p_reward, 
+            'y_reward': y_reward} 
+
   def _sample_episodes(self, sess, start_step = 0, greedy=False):
     """Sample episodes from environment using model."""
     # reset environments as necessary
@@ -151,7 +173,10 @@ class Controller(object):
     if self.ep_dir and self.model.train:
         filepath = self._create_episode_data_file()
         ep_file = open(filepath, 'w', newline='')
-        ep_writer = csv.writer(ep_file)
+        #ep_writer = csv.writer(ep_file)
+        fieldnames = ['step', 'sim_time', 'sp_r', 'sp_p', 'sp_y', 'r', 'p', 'y', "m0", "m1", "m2", "m3", 'r_reward', 'p_reward', 'y_reward'] 
+        ep_writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        ep_writer.writeheader()
 
     for i, obs in enumerate(obs_after_reset):
       if obs is not None:
@@ -195,7 +220,9 @@ class Controller(object):
       #env_actions = env_actions[0]
       # Log the step, observations, actions and info
       if ep_writer: 
+          # There are as many observations as there are environments
           for i in range(len(next_obs[0])):
+              """
               info_vals = list(info[i].values())
               vals = []
               for _info in info_vals:
@@ -208,6 +235,8 @@ class Controller(object):
                 ([step*len(next_obs[0]) + i ], next_obs[0][i], env_actions[0][i], np.array(vals) )
               )
               ep_writer.writerow(row)
+              """
+              ep_writer.writerow(self._log_step(step*len(next_obs[0]) + i ,next_obs[0][i],env_actions[0][i], info[i]))
 
       all_obs.append(self.last_obs)
       all_act.append(sampled_actions)
