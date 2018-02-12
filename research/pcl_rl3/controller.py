@@ -175,7 +175,7 @@ class Controller(object):
         ep_file = open(filepath, 'w', newline='')
         #ep_writer = csv.writer(ep_file)
         fieldnames = ['step', 'sim_time', 'sp_r', 'sp_p', 'sp_y', 'r', 'p', 'y', "m0", "m1", "m2", "m3", 'r_reward', 'p_reward', 'y_reward'] 
-        ep_writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        ep_writer = csv.DictWriter(ep_file, fieldnames=fieldnames)
         ep_writer.writeheader()
 
     for i, obs in enumerate(obs_after_reset):
